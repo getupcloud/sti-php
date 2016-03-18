@@ -10,19 +10,13 @@ The resulting image can be run using [Docker](http://docker.io).
 
 Usage
 ---------------------
-To build a simple [php-test-app](https://github.com/openshift/sti-php/tree/master/5.6/test/test-app) application
+To build a simple [php-test-app](https://github.com/openshift/sti-php/tree/master/7.0/test/test-app) application
 using standalone [S2I](https://github.com/openshift/source-to-image) and then run the
 resulting image with [Docker](http://docker.io) execute:
 
-*  **For RHEL based image**
-    ```
-    $ s2i build https://github.com/openshift/sti-php.git --context-dir=5.6/test/test-app rhscl/php-56-rhel7 php-test-app
-    $ docker run -p 8080:8080 php-test-app
-    ```
-
 *  **For CentOS based image**
     ```
-    $ s2i build https://github.com/openshift/sti-php.git --context-dir=5.6/test/test-app centos/php-56-centos7 php-test-app
+    $ s2i build https://github.com/openshift/sti-php.git --context-dir=7.0/test/test-app centos/php-70-centos7 php-test-app
     $ docker run -p 8080:8080 php-test-app
     ```
 
@@ -102,7 +96,7 @@ The following environment variables set their equivalent property value in the p
   * Default: ON
 * **INCLUDE_PATH**
   * Path for PHP source files
-  * Default: .:/opt/app-root/src:/opt/rh/rh-php56/root/usr/share/pear
+  * Default: .:/opt/app-root/src:/usr/share/pear
 * **SESSION_PATH**
   * Location for session data files
   * Default: /tmp/sessions
