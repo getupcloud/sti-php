@@ -25,6 +25,9 @@ RUN yum install -y epel-release https://mirror.webtatic.com/yum/el7/webtatic-rel
     rpm -V $INSTALL_PKGS && \
     yum clean all -y
 
+RUN pecl install mongodb && \
+    pecl clear-cache
+
 # Copy the S2I scripts from the specific language image to $STI_SCRIPTS_PATH
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 

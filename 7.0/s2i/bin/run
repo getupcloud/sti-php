@@ -19,5 +19,6 @@ export PHP_INI_SCAN_DIR=${PHP_INI_SCAN_DIR:-/etc/php.d}
 
 envsubst < /opt/app-root/etc/php.ini.template > $PHPRC
 envsubst < /opt/app-root/etc/php.d/10-opcache.ini.template > $PHP_INI_SCAN_DIR/10-opcache.ini
+envsubst < /opt/app-root/etc/php.d/10-mongodb.ini.template > $PHP_INI_SCAN_DIR/10-mongodb.ini
 
 exec httpd -D FOREGROUND
