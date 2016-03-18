@@ -3,7 +3,7 @@ FROM openshift/base-centos7
 # This image provides an Apache+PHP environment for running PHP
 # applications.
 
-MAINTAINER SoftwareCollections.org <sclorg@redhat.com>
+MAINTAINER Mateus Caruccio <mateus.caruccio@getupcloud.com>
 
 EXPOSE 8080
 
