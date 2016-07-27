@@ -20,7 +20,7 @@ DOCKERFILE_PATH=""
 
 test -z "$BASE_IMAGE_NAME" && {
   BASE_DIR_NAME=$(echo $(basename `pwd`) | sed -e 's/-[0-9]*$//g')
-  BASE_IMAGE_NAME="${BASE_DIR_NAME#sti-}"
+  BASE_IMAGE_NAME="${BASE_DIR_NAME#s2i-}"
 }
 
 NAMESPACE="openshift/"
@@ -44,13 +44,13 @@ function docker_build_with_version {
 }
 
 # Install the docker squashing tool[1] and squash the result image
-# [1] https://github.com/goldmann/docker-scripts
+# [1] https://github.com/goldmann/docker-squash
 function squash {
   # FIXME: We have to use the exact versions here to avoid Docker client
   #        compatibility issues
-  easy_install -q --user docker_py==1.6.0 docker-scripts==0.4.4
+  easy_install -q --user docker_py==1.6.0 docker-squash==1.0.0rc6
   base=$(awk '/^FROM/{print $2}' $1)
-  ${HOME}/.local/bin/docker-scripts squash -f $base ${IMAGE_NAME}
+  ${HOME}/.local/bin/docker-squash -f $base ${IMAGE_NAME}
 }
 
 # Versions are stored in subdirectories. You can specify VERSION variable
@@ -64,6 +64,11 @@ for dir in ${dirs}; do
       if [ "${OS}" == "centos7" ]; then
         NAMESPACE="centos/"
       else
+        # we don't test rhel versions of SCL owned images
+        if [[ "${SKIP_RHEL_SCL}" == "1" ]]; then
+          echo "Skipping rhel scl image ${BASE_IMAGE_NAME}-${dir//./}-{$OS}"
+          continue
+        fi
         NAMESPACE="rhscl/"
       fi
   esac

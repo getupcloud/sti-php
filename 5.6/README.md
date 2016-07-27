@@ -10,19 +10,19 @@ The resulting image can be run using [Docker](http://docker.io).
 
 Usage
 ---------------------
-To build a simple [php-test-app](https://github.com/openshift/sti-php/tree/master/5.6/test/test-app) application
+To build a simple [php-test-app](https://github.com/openshift/s2i-php/tree/master/5.6/test/test-app) application
 using standalone [S2I](https://github.com/openshift/source-to-image) and then run the
 resulting image with [Docker](http://docker.io) execute:
 
 *  **For RHEL based image**
     ```
-    $ s2i build https://github.com/openshift/sti-php.git --context-dir=5.6/test/test-app rhscl/php-56-rhel7 php-test-app
+    $ s2i build https://github.com/openshift/s2i-php.git --context-dir=5.6/test/test-app rhscl/php-56-rhel7 php-test-app
     $ docker run -p 8080:8080 php-test-app
     ```
 
 *  **For CentOS based image**
     ```
-    $ s2i build https://github.com/openshift/sti-php.git --context-dir=5.6/test/test-app centos/php-56-centos7 php-test-app
+    $ s2i build https://github.com/openshift/s2i-php.git --context-dir=5.6/test/test-app centos/php-56-centos7 php-test-app
     $ docker run -p 8080:8080 php-test-app
     ```
 
@@ -106,6 +106,12 @@ The following environment variables set their equivalent property value in the p
 * **SESSION_PATH**
   * Location for session data files
   * Default: /tmp/sessions
+* **SHORT_OPEN_TAG**
+  * Determines whether or not PHP will recognize code between <? and ?> tags
+  * Default: OFF
+* **DOCUMENTROOT**
+  * Path that defines the DocumentRoot for your application (ie. /public)
+  * Default: /
 
 The following environment variables set their equivalent property value in the opcache.ini file:
 * **OPCACHE_MEMORY_CONSUMPTION**
@@ -120,6 +126,28 @@ You can also override the entire directory used to load the PHP configuration by
   * Sets the path to the php.ini file
 * **PHP_INI_SCAN_DIR**
   * Path to scan for additional ini configuration files
+
+You can override the Apache [MPM prefork](https://httpd.apache.org/docs/2.4/mod/mpm_common.html)
+settings to increase the performance for of the PHP application. In case you set
+the Cgroup limits in Docker, the image will attempt to automatically set the
+optimal values. You can override this at any time by specifying the values
+yourself:
+
+* **HTTPD_START_SERVERS**
+  * The [StartServers](https://httpd.apache.org/docs/2.4/mod/mpm_common.html#startservers)
+    directive sets the number of child server processes created on startup.
+  * Default: 8
+* **HTTPD_MAX_REQUEST_WORKERS**
+  * The [MaxRequestWorkers](https://httpd.apache.org/docs/2.4/mod/mpm_common.html#maxrequestworkers)
+    directive sets the limit on the number of simultaneous requests that will be served.
+  * `MaxRequestWorkers` was called `MaxClients` before version httpd 2.3.13.
+  * Default: 256 (this is automatically tuned by setting Cgroup limits for the container using this formula:
+    `TOTAL_MEMORY / 15MB`. The 15MB is average size of a single httpd process.
+
+  You can use a custom composer repository mirror URL to download packages instead of the default 'packagist.org':
+
+    * **COMPOSER_MIRROR**
+      * Adds a custom composer repository mirror URL to composer configuration. Note: This only affects packages listed in composer.json.
 
 Source repository layout
 ------------------------

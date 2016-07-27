@@ -36,13 +36,15 @@ COPY ./contrib/ /opt/app-root
 # writeable as OpenShift default security model is to run the container under
 # random UID.
 RUN sed -i -f /opt/app-root/etc/httpdconf.sed /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
+    echo "IncludeOptional /opt/app-root/etc/conf.d/*.conf" >> /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf && \
     sed -i '/php_value session.save_path/d' /opt/rh/httpd24/root/etc/httpd/conf.d/rh-php56-php.conf && \
     head -n151 /opt/rh/httpd24/root/etc/httpd/conf/httpd.conf | tail -n1 | grep "AllowOverride All" || exit && \
     mkdir /tmp/sessions && \
-    chmod -R a+rwx /etc/opt/rh/rh-php56 && \
-    chmod -R a+rwx /opt/rh/httpd24/root/var/run/httpd && \
+    chown -R 1001:0 /opt/app-root /tmp/sessions && \
     chmod -R a+rwx /tmp/sessions && \
-    chown -R 1001:0 /opt/app-root /tmp/sessions
+    chmod -R ug+rwx /opt/app-root && \
+    chmod -R a+rwx /etc/opt/rh/rh-php56 && \
+    chmod -R a+rwx /opt/rh/httpd24/root/var/run/httpd
 
 USER 1001
 
