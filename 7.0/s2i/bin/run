@@ -42,5 +42,7 @@ fi
 envsubst < /opt/app-root/etc/php.ini.template > $PHPRC
 envsubst < /opt/app-root/etc/php.d/10-opcache.ini.template > $PHP_INI_SCAN_DIR/10-opcache.ini
 envsubst < /opt/app-root/etc/php.d/10-mongodb.ini.template > $PHP_INI_SCAN_DIR/10-mongodb.ini
+envsubst < /opt/app-root/etc/conf.d/50-mpm-tuning.conf.template >   /opt/app-root/etc/conf.d/50-mpm-tuning.conf
+envsubst < /opt/app-root/etc/conf.d/00-documentroot.conf.template > /opt/app-root/etc/conf.d/00-documentroot.conf
 
 exec httpd -D FOREGROUND
