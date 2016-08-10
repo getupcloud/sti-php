@@ -1,0 +1,5 @@
+; Enable MongoDB driver for PHP extension module
+extension=mongodb.so
+
+; Configuration
+;mongodb.debug=''

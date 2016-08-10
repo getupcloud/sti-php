@@ -293,20 +293,17 @@ serialize_precision = 17
 
 ; open_basedir, if set, limits all file operations to the defined directory
 ; and below.  This directive makes most sense if used in a per-directory
-; or per-virtualhost web server configuration file. This directive is
-; *NOT* affected by whether Safe Mode is turned On or Off.
+; or per-virtualhost web server configuration file.
 ; http://php.net/open-basedir
 ;open_basedir =
 
 ; This directive allows you to disable certain functions for security reasons.
-; It receives a comma-delimited list of function names. This directive is
-; *NOT* affected by whether Safe Mode is turned On or Off.
+; It receives a comma-delimited list of function names.
 ; http://php.net/disable-functions
 disable_functions =
 
 ; This directive allows you to disable certain classes for security reasons.
-; It receives a comma-delimited list of class names. This directive is
-; *NOT* affected by whether Safe Mode is turned On or Off.
+; It receives a comma-delimited list of class names.
 ; http://php.net/disable-classes
 disable_classes =
 
@@ -611,13 +608,13 @@ html_errors = ${HTML_ERRORS}
 ; http://php.net/variables-order
 variables_order = "GPCS"
 
-; This directive determines which super global data (G,P,C,E & S) should
-; be registered into the super global array REQUEST. If so, it also determines
-; the order in which that data is registered. The values for this directive are
-; specified in the same manner as the variables_order directive, EXCEPT one.
-; Leaving this value empty will cause PHP to use the value set in the
-; variables_order directive. It does not mean it will leave the super globals
-; array REQUEST empty.
+; This directive determines which super global data (G,P & C) should be
+; registered into the super global array REQUEST. If so, it also determines
+; the order in which that data is registered. The values for this directive
+; are specified in the same manner as the variables_order directive,
+; EXCEPT one. Leaving this value empty will cause PHP to use the value set
+; in the variables_order directive. It does not mean it will leave the super
+; globals array REQUEST empty.
 ; Default Value: None
 ; Development Value: "GP"
 ; Production Value: "GP"
@@ -678,7 +675,7 @@ auto_append_file =
 ; http://php.net/default-mimetype
 default_mimetype = "text/html"
 
-; PHP's default character set is set to empty.
+; PHP's default character set is set to UTF-8.
 ; http://php.net/default-charset
 default_charset = "UTF-8"
 
@@ -688,21 +685,16 @@ default_charset = "UTF-8"
 ;internal_encoding =
 
 ; PHP input character encoding is set to empty.
+; If empty, default_charset is used.
 ; http://php.net/input-encoding
 ;input_encoding =
 
 ; PHP output character encoding is set to empty.
+; If empty, default_charset is used.
 ; mbstring or iconv output handler is used.
 ; See also output_buffer.
 ; http://php.net/output-encoding
 ;output_encoding =
-
-; Always populate the $HTTP_RAW_POST_DATA variable. PHP's default behavior is
-; to disable this feature and it will be removed in a future version.
-; If post reading is disabled through enable_post_data_reading,
-; $HTTP_RAW_POST_DATA is *NOT* populated.
-; http://php.net/always-populate-raw-post-data
-;always_populate_raw_post_data = -1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Paths and Directories ;
@@ -952,6 +944,10 @@ date.timezone = GMT
 ; http://php.net/pcre.recursion-limit
 ;pcre.recursion_limit=100000
 
+;Enables or disables JIT compilation of patterns. This requires the PCRE
+;library to be compiled with JIT support.
+pcre.jit= ${PCRE_ENABLE_JIT}
+
 [Pdo]
 ; Whether to pool ODBC connections. Can be one of "strict", "relaxed" or "off"
 ; http://php.net/pdo-odbc.connection-pooling
@@ -985,7 +981,7 @@ sendmail_path = /usr/sbin/sendmail -t -i
 
 ; Force the addition of the specified parameters to be passed as extra parameters
 ; to the sendmail binary. These parameters will always replace the value of
-; the 5th parameter to mail(), even in safe mode.
+; the 5th parameter to mail().
 ;mail.force_extra_parameters =
 
 ; Add X-PHP-Originating-Script: that will include uid of the script followed by the filename
@@ -1074,64 +1070,6 @@ ibase.dateformat = "%Y-%m-%d"
 
 ; Default time format.
 ibase.timeformat = "%H:%M:%S"
-
-[MySQL]
-; Allow accessing, from PHP's perspective, local files with LOAD DATA statements
-; http://php.net/mysql.allow_local_infile
-mysql.allow_local_infile = On
-
-; Allow or prevent persistent links.
-; http://php.net/mysql.allow-persistent
-mysql.allow_persistent = On
-
-; If mysqlnd is used: Number of cache slots for the internal result set cache
-; http://php.net/mysql.cache_size
-mysql.cache_size = 2000
-
-; Maximum number of persistent links.  -1 means no limit.
-; http://php.net/mysql.max-persistent
-mysql.max_persistent = -1
-
-; Maximum number of links (persistent + non-persistent).  -1 means no limit.
-; http://php.net/mysql.max-links
-mysql.max_links = -1
-
-; Default port number for mysql_connect().  If unset, mysql_connect() will use
-; the $MYSQL_TCP_PORT or the mysql-tcp entry in /etc/services or the
-; compile-time value defined MYSQL_PORT (in that order).  Win32 will only look
-; at MYSQL_PORT.
-; http://php.net/mysql.default-port
-mysql.default_port =
-
-; Default socket name for local MySQL connects.  If empty, uses the built-in
-; MySQL defaults.
-; http://php.net/mysql.default-socket
-mysql.default_socket =
-
-; Default host for mysql_connect() (doesn't apply in safe mode).
-; http://php.net/mysql.default-host
-mysql.default_host =
-
-; Default user for mysql_connect() (doesn't apply in safe mode).
-; http://php.net/mysql.default-user
-mysql.default_user =
-
-; Default password for mysql_connect() (doesn't apply in safe mode).
-; Note that this is generally a *bad* idea to store passwords in this file.
-; *Any* user with PHP access can run 'echo get_cfg_var("mysql.default_password")
-; and reveal this password!  And of course, any users with read access to this
-; file will be able to reveal the password as well.
-; http://php.net/mysql.default-password
-mysql.default_password =
-
-; Maximum time (in seconds) for connect timeout. -1 means no limit
-; http://php.net/mysql.connect-timeout
-mysql.connect_timeout = 60
-
-; Trace mode. When trace_mode is active (=On), warnings for table/index scans and
-; SQL-Errors will be displayed.
-; http://php.net/mysql.trace-mode
-mysql.trace_mode = Off
 
 [MySQLi]
 
@@ -1247,6 +1185,11 @@ mysqlnd.collect_memory_statistics = Off
 ; Tuning: This option enables statement caching, and specifies how
 ; many statements to cache. Using 0 disables statement caching.
 ; http://php.net/oci8.statement-cache-size
+;oci8.statement_cache_size = 20
+
+; Tuning: Enables statement prefetching and sets the default number of
+; rows that will be fetched automatically after statement execution.
+; http://php.net/oci8.default-prefetch
 ;oci8.statement_cache_size = 20
 
 ; Tuning: Enables statement prefetching and sets the default number of
@@ -1626,18 +1569,32 @@ mssql.secure_connection = Off
 ; msdlib defaults to 25
 ; FreeTDS defaults to 4096
 ;mssql.max_procs = -1
-
 ; Specify client character set.
 ; If empty or not set the client charset from freetds.conf is used
 ; This is only used when compiled with FreeTDS
 ;mssql.charset = "ISO-8859-1"
 
 [Assertion]
+; Switch whether to compile assertions at all (to have no overhead at run-time)
+; -1: Do not compile at all
+;  0: Jump over assertion at run-time
+;  1: Execute assertions
+; Changing from or to a negative value is only possible in php.ini! (For turning assertions on and off at run-time, see assert.active, when zend.assertions = 1)
+; Default Value: 1
+; Development Value: 1
+; Production Value: -1
+; http://php.net/zend.assertions
+zend.assertions = ${ZEND_ASSERTIONS}
+
 ; Assert(expr); active by default.
 ; http://php.net/assert.active
-;assert.active = On
+assert.active = ${ASSERT_ACTIVE}
 
-; Issue a PHP warning for each failed assertion.
+; Throw an AssertationException on failed assertions
+; http://php.net/assert.exception
+;assert.exception = On
+
+; Issue a PHP warning for each failed assertion. (Overridden by assert.exception if active)
 ; http://php.net/assert.warning
 ;assert.warning = On
 
@@ -1656,7 +1613,7 @@ mssql.secure_connection = Off
 
 [mbstring]
 ; language for internal character representation.
-; This affects mb_send_mail() and mbstrig.detect_order.
+; This affects mb_send_mail() and mbstring.detect_order.
 ; http://php.net/mbstring.language
 ;mbstring.language = Japanese
 
