@@ -16,7 +16,7 @@ resulting image with [Docker](http://docker.io) execute:
 
 *  **For CentOS based image**
     ```
-    $ s2i build https://github.com/openshift/sti-php.git --context-dir=7.0/test/test-app centos/php-70-centos7 php-test-app
+    $ s2i build https://github.com/openshift/sti-php.git --context-dir=7.0/test/test-app getupcloud/php-70-centos7 php-test-app
     $ docker run -p 8080:8080 php-test-app
     ```
 
