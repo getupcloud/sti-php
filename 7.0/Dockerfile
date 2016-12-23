@@ -16,7 +16,7 @@ LABEL io.k8s.description="Platform for building and running PHP 7.0 applications
 
 # Install Apache httpd and PHP
 RUN yum install -y epel-release http://rpms.remirepo.net/enterprise/remi-release-7.rpm && \
-    INSTALL_PKGS="php php-ast php-bcmath php-cli php-common php-dba php-gd php-intl php-json php-mbstring \
+    INSTALL_PKGS="php php-devel php-ast php-bcmath php-cli php-common php-dba php-gd php-intl php-json php-mbstring \
                   php-mcrypt php-mysqlnd php-opcache php-pdo php-pear php-pecl-igbinary \
                   php-pecl-memcache php-pecl-mongodb php-pecl-redis php-pecl-scrypt php-pecl-uuid php-pecl-xdebug php-pgsql" && \
     yum install -y --enablerepo=remi-php70,epel-release --setopt=tsflags=nodocs $INSTALL_PKGS && \
