@@ -1,3 +1,8 @@
+
+Notice: this images where deprecated in favor of [official centos images](https://github.com/sclorg/s2i-php-container).
+If you are looking for more complete images, please take a look at our [php-extra](https://github.com/getupcloud/sti-php-extra) repo.
+===
+
 PHP Docker images
 =================
 
